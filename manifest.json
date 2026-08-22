@@ -1,9 +1,9 @@
 {
-  "name": "Little Farmer",
-  "short_name": "Farmer",
+  "name": "Homestead Adventure",
+  "short_name": "Homestead",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#7ec850",
-  "theme_color": "#7ec850",
+  "background_color": "#79c952",
+  "theme_color": "#79c952",
   "icons": []
 }
