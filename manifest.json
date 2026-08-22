@@ -1,9 +1,9 @@
 {
   "name": "Homestead Adventure",
   "short_name": "Homestead",
-  "start_url": "./index.html",
+  "start_url": "./v2.html",
   "display": "standalone",
-  "background_color": "#79c952",
-  "theme_color": "#79c952",
+  "background_color": "#6eb552",
+  "theme_color": "#5b9e45",
   "icons": []
 }
