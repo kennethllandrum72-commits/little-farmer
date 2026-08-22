@@ -1,166 +1,25 @@
 <!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#7ec850">
-<title>Little Farmer</title>
-<link rel="manifest" href="manifest.json">
-<style>
-  html,body{margin:0;height:100%;overflow:hidden;background:#7ec850;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;touch-action:none}
-  #game{display:block;width:100vw;height:100vh}
-  #hud{position:fixed;top:calc(env(safe-area-inset-top) + 8px);left:10px;right:10px;display:flex;gap:8px;z-index:3;pointer-events:none}
-  .pill{background:rgba(255,255,255,.9);border-radius:16px;padding:8px 12px;font-weight:700;box-shadow:0 2px 8px rgba(0,0,0,.15)}
-  #msg{position:fixed;top:calc(env(safe-area-inset-top) + 56px);left:50%;transform:translateX(-50%);background:rgba(0,0,0,.68);color:#fff;padding:8px 12px;border-radius:12px;z-index:4;font-size:14px;opacity:0;transition:.2s}
-  #joy{position:fixed;left:22px;bottom:calc(env(safe-area-inset-bottom) + 24px);width:122px;height:122px;border-radius:50%;background:rgba(255,255,255,.25);border:3px solid rgba(255,255,255,.55);z-index:3}
-  #stick{position:absolute;left:36px;top:36px;width:50px;height:50px;border-radius:50%;background:rgba(255,255,255,.78);box-shadow:0 2px 7px rgba(0,0,0,.25)}
-  #actions{position:fixed;right:18px;bottom:calc(env(safe-area-inset-bottom) + 22px);display:grid;grid-template-columns:78px 78px;gap:10px;z-index:3}
-  button{border:none;border-radius:20px;padding:13px 8px;font-weight:800;font-size:15px;background:rgba(255,255,255,.92);box-shadow:0 3px 10px rgba(0,0,0,.22)}
-  button:active{transform:scale(.96)}
-  #upgrade{grid-column:1/3;background:#ffd75e}
-  #help{position:fixed;right:12px;top:calc(env(safe-area-inset-top) + 8px);z-index:5;background:#fff;width:38px;height:38px;border-radius:50%;padding:0}
-  #panel{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9;display:none;align-items:center;justify-content:center;padding:22px}
-  #panel .card{background:#fff;border-radius:22px;padding:20px;max-width:430px;line-height:1.35}
-  #panel h2{margin-top:0}
-</style>
-</head>
-<body>
-<canvas id="game"></canvas>
-<div id="hud">
-  <div class="pill">🪙 <span id="coins">0</span></div>
-  <div class="pill">🌱 <span id="seeds">6</span></div>
-  <div class="pill">🌾 <span id="crops">0</span></div>
-  <div class="pill">⭐ Lv <span id="level">1</span></div>
-</div>
-<div id="msg"></div>
-<button id="help">?</button>
-<div id="joy"><div id="stick"></div></div>
-<div id="actions">
-  <button id="interact">USE</button>
-  <button id="plant">PLANT</button>
-  <button id="sell">SELL</button>
-  <button id="upgrade">UPGRADE TOOL</button>
-</div>
-<div id="panel">
-  <div class="card">
-    <h2>Little Farmer</h2>
-    <p>Use the left joystick to move.</p>
-    <p><b>USE</b> chops trees, breaks rocks, and harvests ripe crops when you are close.</p>
-    <p><b>PLANT</b> puts a seed into an empty dirt plot.</p>
-    <p><b>SELL</b> sells your harvested crops.</p>
-    <p><b>UPGRADE TOOL</b> makes chopping and mining faster.</p>
-    <p>Earn coins and XP to level up.</p>
-    <button id="closeHelp" style="width:100%">PLAY</button>
-  </div>
-</div>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="theme-color" content="#7ec850"><title>Little Farmer</title><link rel="manifest" href="manifest.json"><style>
+html,body{margin:0;height:100%;overflow:hidden;background:#76c94f;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;touch-action:none}#game{display:block;width:100vw;height:100vh}#hud{position:fixed;top:calc(env(safe-area-inset-top) + 8px);left:8px;right:8px;display:flex;gap:6px;z-index:5;overflow-x:auto}.pill{background:rgba(255,255,255,.94);border-radius:14px;padding:7px 10px;font-weight:800;font-size:14px;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,.18)}#msg{position:fixed;top:calc(env(safe-area-inset-top) + 54px);left:50%;transform:translateX(-50%);background:rgba(0,0,0,.72);color:#fff;padding:8px 12px;border-radius:12px;z-index:7;font-size:14px;opacity:0;transition:.2s;white-space:nowrap}#joy{position:fixed;left:18px;bottom:calc(env(safe-area-inset-bottom) + 22px);width:118px;height:118px;border-radius:50%;background:rgba(255,255,255,.25);border:3px solid rgba(255,255,255,.58);z-index:5}#stick{position:absolute;left:34px;top:34px;width:50px;height:50px;border-radius:50%;background:rgba(255,255,255,.82);box-shadow:0 2px 7px rgba(0,0,0,.25)}#actions{position:fixed;right:14px;bottom:calc(env(safe-area-inset-bottom) + 18px);display:grid;grid-template-columns:76px 76px;gap:8px;z-index:5}button{border:none;border-radius:18px;padding:12px 6px;font-weight:800;font-size:14px;background:rgba(255,255,255,.94);box-shadow:0 3px 10px rgba(0,0,0,.22)}button:active{transform:scale(.96)}#shopBtn{grid-column:1/3;background:#ffd45e}#panel,#shopPanel{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:20;display:none;align-items:center;justify-content:center;padding:18px}.card{background:#fff;border-radius:22px;padding:18px;max-width:430px;width:100%;max-height:78vh;overflow:auto}.shopgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.shopitem{border:1px solid #ddd;border-radius:14px;padding:10px;background:#fafafa}.shopitem button{width:100%;margin-top:6px;background:#dff0c8}.small{font-size:13px;color:#555}#help{position:fixed;right:10px;top:calc(env(safe-area-inset-top) + 8px);z-index:8;width:38px;height:38px;border-radius:50%;padding:0}
+</style></head><body>
+<canvas id="game"></canvas><div id="hud"><div class="pill">🪙 <span id="coins">0</span></div><div class="pill">⭐ Lv <span id="level">1</span></div><div class="pill">🌾 <span id="wheat">0</span></div><div class="pill">🥕 <span id="carrot">0</span></div><div class="pill">🌽 <span id="corn">0</span></div><div class="pill">🥚 <span id="eggs">0</span></div></div><div id="msg"></div><button id="help">?</button><div id="joy"><div id="stick"></div></div><div id="actions"><button id="useBtn">USE</button><button id="plantBtn">PLANT</button><button id="sellBtn">SELL</button><button id="shopBtn">SHOP</button></div>
+<div id="panel"><div class="card"><h2>Little Farmer</h2><p>Move with the left joystick.</p><p><b>USE</b>: chop trees, mine rocks, harvest crops, collect eggs/milk.</p><p><b>PLANT</b>: plants your selected seed in a nearby empty plot.</p><p><b>SELL</b>: sells all harvested goods.</p><p><b>SHOP</b>: buy seeds, animals, and tool upgrades.</p><button id="closeHelp" style="width:100%">PLAY</button></div></div>
+<div id="shopPanel"><div class="card"><h2>Farm Shop</h2><p class="small">Tap a crop to select it for planting.</p><div class="shopgrid">
+<div class="shopitem"><b>🌾 Wheat Seeds</b><div class="small">5 coins • 8 sec</div><button onclick="buySeed('wheat',5)">Buy 1</button><button onclick="selectSeed('wheat')">Select</button></div>
+<div class="shopitem"><b>🥕 Carrot Seeds</b><div class="small">8 coins • 12 sec</div><button onclick="buySeed('carrot',8)">Buy 1</button><button onclick="selectSeed('carrot')">Select</button></div>
+<div class="shopitem"><b>🌽 Corn Seeds</b><div class="small">12 coins • 16 sec</div><button onclick="buySeed('corn',12)">Buy 1</button><button onclick="selectSeed('corn')">Select</button></div>
+<div class="shopitem"><b>🐔 Chicken</b><div class="small">75 coins • lays eggs</div><button onclick="buyAnimal('chicken',75)">Buy</button></div>
+<div class="shopitem"><b>🐄 Cow</b><div class="small">150 coins • gives milk</div><button onclick="buyAnimal('cow',150)">Buy</button></div>
+<div class="shopitem"><b>🪓 Tool Upgrade</b><div class="small">Faster chopping/mining</div><button onclick="upgradeTool()">Upgrade</button></div></div><p><b>Selected:</b> <span id="selectedSeed">wheat</span></p><p><b>Seeds:</b> 🌾 <span id="sw">6</span> 🥕 <span id="sc">0</span> 🌽 <span id="sco">0</span></p><button id="closeShop" style="width:100%">CLOSE</button></div></div>
 <script>
-const cvs=document.getElementById('game'), ctx=cvs.getContext('2d');
-let W,H,dpr=Math.min(devicePixelRatio||1,2);
-function resize(){W=innerWidth;H=innerHeight;cvs.width=W*dpr;cvs.height=H*dpr;cvs.style.width=W+'px';cvs.style.height=H+'px';ctx.setTransform(dpr,0,0,dpr,0,0)}
-addEventListener('resize',resize);resize();
-
-const ui = id=>document.getElementById(id);
-let state = JSON.parse(localStorage.getItem('littleFarmerSave')||'null') || {
-  coins:0,seeds:6,crops:0,level:1,xp:0,tool:1,player:{x:560,y:430}
-};
-function save(){localStorage.setItem('littleFarmerSave',JSON.stringify(state))}
-function hud(){ui('coins').textContent=state.coins;ui('seeds').textContent=state.seeds;ui('crops').textContent=state.crops;ui('level').textContent=state.level}
-hud();
-
-const world={w:1400,h:900};
-const trees=[
- {x:180,y:170,hp:3},{x:260,y:210,hp:3},{x:1080,y:150,hp:3},{x:1180,y:230,hp:3},{x:990,y:700,hp:3},
- {x:170,y:690,hp:3},{x:320,y:760,hp:3}
-];
-const rocks=[{x:380,y:150,hp:4},{x:1240,y:560,hp:4},{x:830,y:130,hp:4},{x:250,y:520,hp:4}];
-const plots=[];
-for(let r=0;r<3;r++)for(let c=0;c<5;c++)plots.push({x:560+c*66,y:560+r*58,state:0,t:0});
-
-let cam={x:0,y:0}, joy={x:0,y:0}, active=false;
-const joyEl=ui('joy'), stick=ui('stick');
-function joyPos(ev){
-  const r=joyEl.getBoundingClientRect(),t=ev.touches?ev.touches[0]:ev;
-  let dx=t.clientX-(r.left+r.width/2),dy=t.clientY-(r.top+r.height/2);
-  const m=Math.hypot(dx,dy),lim=42;if(m>lim){dx*=lim/m;dy*=lim/m}
-  joy.x=dx/lim;joy.y=dy/lim;stick.style.transform=`translate(${dx}px,${dy}px)`;
-}
-joyEl.addEventListener('touchstart',e=>{active=true;joyPos(e);e.preventDefault()},{passive:false});
-joyEl.addEventListener('touchmove',e=>{if(active)joyPos(e);e.preventDefault()},{passive:false});
-joyEl.addEventListener('touchend',e=>{active=false;joy.x=joy.y=0;stick.style.transform='translate(0,0)'});
-joyEl.addEventListener('mousedown',e=>{active=true;joyPos(e)});
-addEventListener('mousemove',e=>{if(active)joyPos(e)});
-addEventListener('mouseup',()=>{active=false;joy.x=joy.y=0;stick.style.transform='translate(0,0)'});
-
-function near(o,dist=80){return Math.hypot(o.x-state.player.x,o.y-state.player.y)<dist}
-function msg(s){const m=ui('msg');m.textContent=s;m.style.opacity=1;clearTimeout(msg.t);msg.t=setTimeout(()=>m.style.opacity=0,1200)}
-function xp(n){state.xp+=n;let need=20+state.level*15;if(state.xp>=need){state.xp-=need;state.level++;state.seeds+=3;msg('Level up! +3 seeds ⭐')}save();hud()}
-
-function use(){
-  for(const t of trees){if(t.hp>0&&near(t)){t.hp-=state.tool; if(t.hp<=0){state.coins+=8;xp(6);msg('+8 coins from wood')} else msg('Chop!');save();hud();return}}
-  for(const r of rocks){if(r.hp>0&&near(r)){r.hp-=state.tool;if(r.hp<=0){state.coins+=10;xp(7);msg('+10 coins from stone')}else msg('Smash!');save();hud();return}}
-  for(const p of plots){if(p.state===2&&near(p,70)){p.state=0;state.crops++;xp(5);msg('Harvested! 🌾');save();hud();return}}
-  msg('Move closer to something');
-}
-function plant(){
-  for(const p of plots){if(p.state===0&&near(p,70)){if(state.seeds<=0){msg('No seeds');return} p.state=1;p.t=performance.now();state.seeds--;msg('Seed planted 🌱');save();hud();return}}
-  msg('Stand by an empty dirt plot');
-}
-function sell(){
-  if(!state.crops){msg('No crops to sell');return}
-  const amt=state.crops*12;state.coins+=amt;state.crops=0;msg(`Sold crops +${amt} 🪙`);xp(4);save();hud();
-}
-function upgrade(){
-  const cost=40*state.tool;
-  if(state.coins<cost){msg(`Need ${cost} coins`);return}
-  state.coins-=cost;state.tool++;msg(`Tool upgraded to Lv ${state.tool}`);save();hud();
-}
-ui('interact').onclick=use;ui('plant').onclick=plant;ui('sell').onclick=sell;ui('upgrade').onclick=upgrade;
-ui('help').onclick=()=>ui('panel').style.display='flex';ui('closeHelp').onclick=()=>ui('panel').style.display='none';
-
-function drawTree(t){
-  if(t.hp<=0)return;ctx.fillStyle='#7b4b27';ctx.fillRect(t.x-10,t.y+12,20,44);
-  ctx.fillStyle='#287e3c';ctx.beginPath();ctx.arc(t.x,t.y,34,0,Math.PI*2);ctx.fill();
-}
-function drawRock(r){
-  if(r.hp<=0)return;ctx.fillStyle='#7a7e83';ctx.beginPath();ctx.moveTo(r.x-30,r.y+20);ctx.lineTo(r.x-18,r.y-20);ctx.lineTo(r.x+18,r.y-28);ctx.lineTo(r.x+32,r.y+10);ctx.lineTo(r.x+12,r.y+28);ctx.closePath();ctx.fill()
-}
-function drawPlot(p,now){
-  ctx.fillStyle='#7c512f';ctx.fillRect(p.x-27,p.y-20,54,40);
-  if(p.state===1){
-    if(now-p.t>9000){p.state=2;save()}
-    ctx.strokeStyle='#3a8f3a';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(p.x,p.y+8);ctx.lineTo(p.x,p.y-9);ctx.stroke();
-    ctx.fillStyle='#59b84c';ctx.beginPath();ctx.arc(p.x-6,p.y-8,6,0,Math.PI*2);ctx.arc(p.x+6,p.y-4,6,0,Math.PI*2);ctx.fill();
-  } else if(p.state===2){
-    ctx.strokeStyle='#d4a620';ctx.lineWidth=4;
-    for(let i=-10;i<=10;i+=10){ctx.beginPath();ctx.moveTo(p.x+i,p.y+12);ctx.lineTo(p.x+i,p.y-12);ctx.stroke()}
-    ctx.fillStyle='#e5bd35';ctx.beginPath();ctx.arc(p.x,p.y-12,9,0,Math.PI*2);ctx.fill();
-  }
-}
-function loop(now){
-  const speed=3.3; state.player.x=Math.max(25,Math.min(world.w-25,state.player.x+joy.x*speed));state.player.y=Math.max(25,Math.min(world.h-25,state.player.y+joy.y*speed));
-  cam.x=Math.max(0,Math.min(world.w-W,state.player.x-W/2));cam.y=Math.max(0,Math.min(world.h-H,state.player.y-H/2));
-  ctx.clearRect(0,0,W,H);ctx.save();ctx.translate(-cam.x,-cam.y);
-  ctx.fillStyle='#8bd35c';ctx.fillRect(0,0,world.w,world.h);
-  // paths
-  ctx.fillStyle='#d9c08a';ctx.fillRect(0,390,world.w,120);ctx.fillRect(500,0,170,world.h);
-  // pond
-  ctx.fillStyle='#70bfe8';ctx.beginPath();ctx.ellipse(1080,430,170,105,0,0,Math.PI*2);ctx.fill();
-  ctx.fillStyle='#5ca948';ctx.fillRect(500,520,390,210);
-  ctx.font='26px sans-serif';ctx.fillText('FARM',650,545);
-  plots.forEach(p=>drawPlot(p,now));trees.forEach(drawTree);rocks.forEach(drawRock);
-  // market
-  ctx.fillStyle='#e55d4c';ctx.fillRect(850,300,100,85);ctx.fillStyle='#fff';ctx.font='20px sans-serif';ctx.fillText('SHOP',872,348);
-  // player
-  ctx.fillStyle='#f0bf74';ctx.beginPath();ctx.arc(state.player.x,state.player.y-12,16,0,Math.PI*2);ctx.fill();
-  ctx.fillStyle='#3c78d8';ctx.fillRect(state.player.x-15,state.player.y+2,30,33);
-  ctx.fillStyle='#7a4b28';ctx.fillRect(state.player.x-19,state.player.y-30,38,8);
-  ctx.restore();
-  requestAnimationFrame(loop)
-}
-requestAnimationFrame(loop);
-setInterval(save,3000);
-</script>
-</body>
-</html>
+const cvs=document.getElementById('game'),ctx=cvs.getContext('2d');let W,H,dpr=Math.min(devicePixelRatio||1,2);function resize(){W=innerWidth;H=innerHeight;cvs.width=W*dpr;cvs.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0)}addEventListener('resize',resize);resize();const ui=id=>document.getElementById(id);
+const D={coins:40,level:1,xp:0,tool:1,selected:'wheat',seeds:{wheat:6,carrot:0,corn:0},goods:{wheat:0,carrot:0,corn:0,eggs:0,milk:0},animals:{chicken:0,cow:0},player:{x:650,y:430}};let state=Object.assign({},D,JSON.parse(localStorage.getItem('littleFarmerSave2')||'{}'));state.seeds=Object.assign({},D.seeds,state.seeds||{});state.goods=Object.assign({},D.goods,state.goods||{});state.animals=Object.assign({},D.animals,state.animals||{});function save(){localStorage.setItem('littleFarmerSave2',JSON.stringify(state))}function hud(){ui('coins').textContent=state.coins;ui('level').textContent=state.level;ui('wheat').textContent=state.goods.wheat;ui('carrot').textContent=state.goods.carrot;ui('corn').textContent=state.goods.corn;ui('eggs').textContent=state.goods.eggs;ui('sw').textContent=state.seeds.wheat;ui('sc').textContent=state.seeds.carrot;ui('sco').textContent=state.seeds.corn;ui('selectedSeed').textContent=state.selected}hud();
+const world={w:1600,h:1000},trees=[{x:150,y:160,hp:3},{x:250,y:220,hp:3},{x:1250,y:160,hp:3},{x:1360,y:250,hp:3},{x:1200,y:760,hp:3},{x:210,y:780,hp:3}],rocks=[{x:390,y:150,hp:4},{x:1390,y:620,hp:4},{x:900,y:140,hp:4},{x:270,y:560,hp:4}],plots=[];for(let r=0;r<4;r++)for(let c=0;c<6;c++)plots.push({x:590+c*64,y:560+r*56,state:0,type:null,readyAt:0});const barns={chicken:{x:1090,y:670},cow:{x:1270,y:700}},timers={chicken:0,cow:0};let cam={x:0,y:0},joy={x:0,y:0},active=false;const joyEl=ui('joy'),stick=ui('stick');function joyPos(ev){const r=joyEl.getBoundingClientRect(),t=ev.touches?ev.touches[0]:ev;let dx=t.clientX-(r.left+r.width/2),dy=t.clientY-(r.top+r.height/2);const m=Math.hypot(dx,dy),lim=40;if(m>lim){dx*=lim/m;dy*=lim/m}joy.x=dx/lim;joy.y=dy/lim;stick.style.transform=`translate(${dx}px,${dy}px)`}joyEl.addEventListener('touchstart',e=>{active=true;joyPos(e);e.preventDefault()},{passive:false});joyEl.addEventListener('touchmove',e=>{if(active)joyPos(e);e.preventDefault()},{passive:false});joyEl.addEventListener('touchend',()=>{active=false;joy.x=joy.y=0;stick.style.transform='translate(0,0)'});
+function near(o,d=80){return Math.hypot(o.x-state.player.x,o.y-state.player.y)<d}function msg(s){const m=ui('msg');m.textContent=s;m.style.opacity=1;clearTimeout(msg.t);msg.t=setTimeout(()=>m.style.opacity=0,1300)}function gainXP(n){state.xp+=n;let need=25+state.level*20;if(state.xp>=need){state.xp-=need;state.level++;state.coins+=20;msg('Level up! +20 coins ⭐')}save();hud()}const cropInfo={wheat:{grow:8000,sell:12,emoji:'🌾'},carrot:{grow:12000,sell:20,emoji:'🥕'},corn:{grow:16000,sell:30,emoji:'🌽'}};
+window.buySeed=(t,c)=>{if(state.coins<c){msg('Not enough coins');return}state.coins-=c;state.seeds[t]++;save();hud();msg('Seed purchased')};window.selectSeed=t=>{state.selected=t;save();hud();msg(t+' selected')};window.buyAnimal=(t,c)=>{if(state.coins<c){msg('Not enough coins');return}state.coins-=c;state.animals[t]++;save();hud();msg(t+' added!')};window.upgradeTool=()=>{const c=50*state.tool;if(state.coins<c){msg('Need '+c+' coins');return}state.coins-=c;state.tool++;save();hud();msg('Tool level '+state.tool)};
+function plant(){for(const p of plots){if(p.state===0&&near(p,68)){const t=state.selected;if(state.seeds[t]<=0){msg('No '+t+' seeds');return}state.seeds[t]--;p.state=1;p.type=t;p.readyAt=Date.now()+cropInfo[t].grow;save();hud();msg(cropInfo[t].emoji+' planted');return}}msg('Stand by an empty plot')}
+function use(){for(const p of plots){if(p.state===2&&near(p,68)){state.goods[p.type]++;p.state=0;p.type=null;gainXP(5);save();hud();msg('Harvested!');return}}for(const t of trees){if(t.hp>0&&near(t)){t.hp-=state.tool;if(t.hp<=0){state.coins+=8;gainXP(4);msg('+8 coins wood')}else msg('Chop!');save();hud();return}}for(const r of rocks){if(r.hp>0&&near(r)){r.hp-=state.tool;if(r.hp<=0){state.coins+=10;gainXP(5);msg('+10 coins stone')}else msg('Smash!');save();hud();return}}if(state.animals.chicken>0&&near(barns.chicken,110)&&Date.now()-timers.chicken>7000){state.goods.eggs+=state.animals.chicken;timers.chicken=Date.now();gainXP(3);hud();save();msg('Collected eggs 🥚');return}if(state.animals.cow>0&&near(barns.cow,120)&&Date.now()-timers.cow>10000){state.goods.milk+=state.animals.cow;timers.cow=Date.now();gainXP(4);hud();save();msg('Collected milk 🥛');return}msg('Nothing ready nearby')}
+function sell(){let total=state.goods.wheat*12+state.goods.carrot*20+state.goods.corn*30+state.goods.eggs*15+state.goods.milk*25;if(!total){msg('Nothing to sell');return}state.coins+=total;state.goods={wheat:0,carrot:0,corn:0,eggs:0,milk:0};gainXP(5);save();hud();msg('Sold goods +'+total+' 🪙')}ui('useBtn').onclick=use;ui('plantBtn').onclick=plant;ui('sellBtn').onclick=sell;ui('shopBtn').onclick=()=>ui('shopPanel').style.display='flex';ui('closeShop').onclick=()=>ui('shopPanel').style.display='none';ui('help').onclick=()=>ui('panel').style.display='flex';ui('closeHelp').onclick=()=>ui('panel').style.display='none';
+function drawTree(t){if(t.hp<=0)return;ctx.fillStyle='#754b2d';ctx.fillRect(t.x-9,t.y+10,18,42);ctx.fillStyle='#2f8c42';ctx.beginPath();ctx.arc(t.x,t.y,32,0,Math.PI*2);ctx.fill()}function drawRock(r){if(r.hp<=0)return;ctx.fillStyle='#85878c';ctx.beginPath();ctx.arc(r.x,r.y,28,0,Math.PI*2);ctx.fill()}function drawPlot(p){ctx.fillStyle='#7c512f';ctx.fillRect(p.x-26,p.y-19,52,38);if(p.state===1&&Date.now()>=p.readyAt)p.state=2;if(p.state===1){ctx.font='22px sans-serif';ctx.fillText('🌱',p.x-12,p.y+7)}if(p.state===2){ctx.font='23px sans-serif';ctx.fillText(cropInfo[p.type].emoji,p.x-12,p.y+7)}}function drawAnimal(t,x,y,n){if(n<=0)return;ctx.font='32px sans-serif';for(let i=0;i<Math.min(n,4);i++)ctx.fillText(t==='chicken'?'🐔':'🐄',x+(i%2)*34,y+Math.floor(i/2)*34);ctx.font='14px sans-serif';ctx.fillStyle='#222';ctx.fillText('x'+n,x+5,y+58)}
+function loop(){const speed=3.5;state.player.x=Math.max(20,Math.min(world.w-20,state.player.x+joy.x*speed));state.player.y=Math.max(20,Math.min(world.h-20,state.player.y+joy.y*speed));cam.x=Math.max(0,Math.min(world.w-W,state.player.x-W/2));cam.y=Math.max(0,Math.min(world.h-H,state.player.y-H/2));ctx.clearRect(0,0,W,H);ctx.save();ctx.translate(-cam.x,-cam.y);ctx.fillStyle='#89d05a';ctx.fillRect(0,0,world.w,world.h);ctx.fillStyle='#dbc38c';ctx.fillRect(0,400,world.w,115);ctx.fillRect(500,0,175,world.h);ctx.fillStyle='#69b9e3';ctx.beginPath();ctx.ellipse(1150,420,175,105,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#63ad4f';ctx.fillRect(520,535,450,270);ctx.fillStyle='#e45b49';ctx.fillRect(850,300,105,85);ctx.fillStyle='#fff';ctx.font='18px sans-serif';ctx.fillText('SHOP',875,347);plots.forEach(drawPlot);trees.forEach(drawTree);rocks.forEach(drawRock);ctx.fillStyle='#d7b27b';ctx.fillRect(1040,620,150,105);ctx.fillStyle='#8b5e34';ctx.fillRect(1220,640,180,125);ctx.fillStyle='#222';ctx.font='16px sans-serif';ctx.fillText('CHICKENS',1060,615);ctx.fillText('COWS',1270,635);drawAnimal('chicken',1060,665,state.animals.chicken);drawAnimal('cow',1245,690,state.animals.cow);ctx.fillStyle='#f0bd73';ctx.beginPath();ctx.arc(state.player.x,state.player.y-12,16,0,Math.PI*2);ctx.fill();ctx.fillStyle='#3978d6';ctx.fillRect(state.player.x-15,state.player.y+2,30,32);ctx.fillStyle='#704525';ctx.fillRect(state.player.x-19,state.player.y-29,38,8);ctx.restore();requestAnimationFrame(loop)}requestAnimationFrame(loop);setInterval(save,3000);
+</script></body></html>
