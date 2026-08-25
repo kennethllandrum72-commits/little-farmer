@@ -6,8 +6,6 @@
   const stick = document.getElementById('stick');
   if (!joystick || !stick) return;
 
-  // Keep the joystick as a visual direction indicator, but movement no longer
-  // requires the player to start their touch inside it.
   joystick.style.pointerEvents = 'none';
   joystick.style.opacity = '0.72';
 
@@ -16,16 +14,21 @@
   let startY = 0;
   const maxDrag = 64;
   const deadZone = 7;
+  const target = { x: 0, y: 0 };
+  const smooth = 0.22;
 
-  function isInteractive(target) {
-    return !!target.closest('button, input, select, textarea, a, [role="button"]');
+  function isInteractive(targetEl) {
+    return !!targetEl.closest('button, input, select, textarea, a, [role="button"]');
+  }
+
+  function setTarget(x, y) {
+    target.x = x;
+    target.y = y;
   }
 
   function resetMovement() {
     activeTouchId = null;
-    joy.x = 0;
-    joy.y = 0;
-    stick.style.transform = '';
+    setTarget(0, 0);
   }
 
   function applyMovement(clientX, clientY) {
@@ -34,19 +37,25 @@
     const distance = Math.hypot(dx, dy);
 
     if (distance < deadZone) {
-      joy.x = 0;
-      joy.y = 0;
-      stick.style.transform = '';
+      setTarget(0, 0);
       return;
     }
 
     const strength = Math.min(1, distance / maxDrag);
-    joy.x = (dx / distance) * strength;
-    joy.y = (dy / distance) * strength;
-
-    // Visual feedback only. Positive X = right, positive Y = down.
-    stick.style.transform = `translate(${joy.x * 28}px, ${joy.y * 28}px)`;
+    setTarget((dx / distance) * strength, (dy / distance) * strength);
   }
+
+  function smoothMovement() {
+    joy.x += (target.x - joy.x) * smooth;
+    joy.y += (target.y - joy.y) * smooth;
+
+    if (Math.abs(target.x) < 0.001 && Math.abs(joy.x) < 0.015) joy.x = 0;
+    if (Math.abs(target.y) < 0.001 && Math.abs(joy.y) < 0.015) joy.y = 0;
+
+    stick.style.transform = `translate(${joy.x * 28}px, ${joy.y * 28}px)`;
+    requestAnimationFrame(smoothMovement);
+  }
+  requestAnimationFrame(smoothMovement);
 
   document.addEventListener('touchstart', (event) => {
     if (activeTouchId !== null || isInteractive(event.target)) return;
@@ -55,8 +64,7 @@
     activeTouchId = touch.identifier;
     startX = touch.clientX;
     startY = touch.clientY;
-    joy.x = 0;
-    joy.y = 0;
+    setTarget(0, 0);
   }, { passive: true, capture: true });
 
   document.addEventListener('touchmove', (event) => {
